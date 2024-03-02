@@ -1,3 +1,4 @@
+import { bcryptAdapter } from "../../config";
 import { UserModel } from "../../data";
 import { CustomError, UserEntity } from "../../domain";
 import { RegisterUserDto } from "../../domain/dtos/auth/register-user.dto";
@@ -9,14 +10,16 @@ export class AuthService {
   // constructor(private readonly emailService: EmailService) {}
 
   public async registerUser(registerUserDto: RegisterUserDto) {
-    const existUser = await UserModel.findOne({ email: registerUserDto.email });
-    if (existUser) throw CustomError.badRequest("Email already exist");
+    const existEmail = await UserModel.findOne({
+      email: registerUserDto.email,
+    });
+    if (existEmail) throw CustomError.badRequest("Email already exist");
 
     try {
       const user = new UserModel(registerUserDto);
 
       // Encriptar password
-      // user.password = bcryptAdapter.hash(registerUserDto.password);
+      user.password = bcryptAdapter.hash(registerUserDto.password);
 
       await user.save();
 

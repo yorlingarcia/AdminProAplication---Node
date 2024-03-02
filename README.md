@@ -13,6 +13,8 @@ Es necesario tener en cuenta que la base de datos involucrada es MongoDb Atlas, 
 - env-var
 - mongoose
 - cors
+- express-validator
+- bcrypt
 
 ## Instalaciones requeridas
 
