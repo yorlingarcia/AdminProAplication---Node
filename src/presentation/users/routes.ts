@@ -1,0 +1,22 @@
+import { Router } from "express";
+import { UsersController } from "./controller";
+import { check } from "express-validator";
+import { AuthMiddleware } from "../middlewares/auth.middleware";
+import { HandleErrorService } from "../services/handle-error.service";
+import { UserService } from "../services/user.service";
+
+export class UsersRoutes {
+  static get routes(): Router {
+    const router = Router();
+    const userService = new UserService();
+    const handleErrorService = new HandleErrorService();
+    const controller = new UsersController(userService, handleErrorService);
+
+    // Definir las rutas
+    router.get("/", controller.getUsers);
+    router.post("/", controller.createUser);
+    router.put("/:id", controller.updateUser);
+    router.delete("/:id", controller.deleteUser);
+    return router;
+  }
+}
