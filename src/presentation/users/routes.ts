@@ -13,7 +13,7 @@ export class UsersRoutes {
     const controller = new UsersController(userService, handleErrorService);
 
     // Definir las rutas
-    router.get("/", controller.getUsers);
+    router.get("/", [AuthMiddleware.validateJwt], controller.getUsers);
     router.post("/", controller.createUser);
     router.put("/:id", controller.updateUser);
     router.delete("/:id", controller.deleteUser);

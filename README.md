@@ -15,6 +15,7 @@ Es necesario tener en cuenta que la base de datos involucrada es MongoDb Atlas, 
 - cors
 - express-validator
 - bcrypt
+- jsonwebtoken
 
 ## Instalaciones requeridas
 
