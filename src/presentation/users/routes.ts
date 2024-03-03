@@ -15,8 +15,8 @@ export class UsersRoutes {
     // Definir las rutas
     router.get("/", [AuthMiddleware.validateJwt], controller.getUsers);
     router.post("/", controller.createUser);
-    router.put("/:id", controller.updateUser);
-    router.delete("/:id", controller.deleteUser);
+    router.put("/:id", [AuthMiddleware.validateJwt], controller.updateUser);
+    router.delete("/:id", [AuthMiddleware.validateJwt], controller.deleteUser);
     return router;
   }
 }
