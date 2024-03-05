@@ -1,10 +1,5 @@
 import { Request, Response } from "express";
-import {
-  CustomError,
-  LoginUserDto,
-  RegisterUserDto,
-  UserEntity,
-} from "../../domain";
+import { RegisterUserDto } from "../../domain";
 import { UpdateUserDto } from "../../domain/dtos/auth/update-user.dto";
 import { UserService } from "../services/user.service";
 import { HandleErrorService } from "../services/handle-error.service";
@@ -13,7 +8,7 @@ export class UsersController {
   constructor(
     private readonly userService: UserService,
     private readonly handleErrorService: HandleErrorService
-  ) {} //
+  ) {}
 
   createUser = async (req: Request, res: Response) => {
     const [error, registerUserDto] = RegisterUserDto.create({
@@ -47,7 +42,7 @@ export class UsersController {
 
     this.userService
       .updateUser(updateUserDto!)
-      .then((resp) => res.json({ resp }))
+      .then((resp) => res.json(resp))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };
 

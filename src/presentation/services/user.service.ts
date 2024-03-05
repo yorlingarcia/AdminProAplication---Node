@@ -1,6 +1,6 @@
 import { JwtAdapter, bcryptAdapter } from "../../config";
 import { UserModel } from "../../data";
-import { CustomError, LoginUserDto, UserEntity } from "../../domain";
+import { CustomError, UserEntity } from "../../domain";
 import { RegisterUserDto } from "../../domain/dtos/auth/register-user.dto";
 // import { JwtAdapter, bcryptAdapter, envs } from "../../config";
 // import { EmailService } from "./email.service";

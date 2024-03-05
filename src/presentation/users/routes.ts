@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { UsersController } from "./controller";
-import { check } from "express-validator";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
 import { HandleErrorService } from "../services/handle-error.service";
 import { UserService } from "../services/user.service";
