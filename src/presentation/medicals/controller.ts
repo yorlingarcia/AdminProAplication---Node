@@ -1,12 +1,5 @@
 import { Request, Response } from "express";
-import {
-  CustomError,
-  LoginUserDto,
-  CreateUserDto,
-  UserEntity,
-} from "../../domain";
-import { UpdateUserDto } from "../../domain/dtos/user/update-user.dto";
-import { UserService } from "../services/user.service";
+import { CustomError, UserEntity, CreateMedicalDto } from "../../domain";
 import { HandleErrorService } from "../services/handle-error.service";
 import { MedicalService } from "../services/medical.service";
 
@@ -17,14 +10,15 @@ export class MedicalsController {
   ) {}
 
   createMedical = async (req: Request, res: Response) => {
-    // const [error, registerUserDto] = RegisterUserDto.create({
-    //   ...req.body,
-    // });
+    const [error, createMedicalDto] = CreateMedicalDto.create({
+      ...req.body,
+      user: req.body.user.id,
+    });
 
-    // if (error) return res.status(400).json({ error });
+    if (error) return res.status(400).json({ error });
 
     this.medicalService
-      .createMedical()
+      .createMedical(createMedicalDto!)
       .then((user) => res.status(201).json(user))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };

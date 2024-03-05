@@ -15,10 +15,14 @@ export class MedicalsRoutes {
     );
 
     // Definir las rutas
-    router.get("/", controller.getMedicals);
-    router.post("/", controller.createMedical);
-    router.put("/:id", controller.updateMedical);
-    router.delete("/:id", controller.deleteMedical);
+    router.get("/", [AuthMiddleware.validateJwt], controller.getMedicals);
+    router.post("/", [AuthMiddleware.validateJwt], controller.createMedical);
+    router.put("/:id", [AuthMiddleware.validateJwt], controller.updateMedical);
+    router.delete(
+      "/:id",
+      [AuthMiddleware.validateJwt],
+      controller.deleteMedical
+    );
     return router;
   }
 }

@@ -1,45 +1,42 @@
 import { JwtAdapter, bcryptAdapter } from "../../config";
-import { UserModel } from "../../data";
-import { CustomError, LoginUserDto, UserEntity } from "../../domain";
-import { CreateUserDto } from "../../domain/dtos/user/create-user.dto";
+import { MedicalModel } from "../../data";
+import { CreateMedicalDto, CustomError, UserEntity } from "../../domain";
 // import { JwtAdapter, bcryptAdapter, envs } from "../../config";
 // import { EmailService } from "./email.service";
-import { UpdateUserDto } from "../../domain/dtos/user/update-user.dto";
 
 export class MedicalService {
   constructor() {}
   // constructor(private readonly emailService: EmailService) {}
 
-  public async createMedical() {
+  public async createMedical(createMedicalDto: CreateMedicalDto) {
     // const existEmail = await UserModel.findOne({
     //   email: registerUserDto.email,
     // });
     // if (existEmail) throw CustomError.badRequest("Email already exist");
 
-    // try {
-    //   const user = new UserModel(registerUserDto);
+    try {
+      const medical = new MedicalModel(createMedicalDto);
 
-    //   // Encriptar password
-    //   user.password = bcryptAdapter.hash(registerUserDto.password);
+      // Encriptar password
+      // user.password = bcryptAdapter.hash(registerUserDto.password);
 
-    //   await user.save();
+      await medical.save();
 
-    //   const { password, ...userEntity } = UserEntity.fromObject(user);
+      // const { password, ...userEntity } = UserEntity.fromObject(user);
 
-    //   const token = await JwtAdapter.generateToken({
-    //     id: userEntity.id,
-    //     email: userEntity.email,
-    //   });
-    //   if (!token) throw CustomError.internalServer("Error while creating JWT");
+      // const token = await JwtAdapter.generateToken({
+      //   id: userEntity.id,
+      //   email: userEntity.email,
+      // });
+      // if (!token) throw CustomError.internalServer("Error while creating JWT");
 
-    //   return {
-    //     user: userEntity,
-    //     token,
-    //   };
-    // } catch (error) {
-    //   throw CustomError.internalServer(`${error}`);
-    // }
-    return "Create Medical";
+      return {
+        medical: medical,
+        // token,
+      };
+    } catch (error) {
+      throw CustomError.internalServer(`${error}`);
+    }
   }
 
   public async getMedicals() {

@@ -15,10 +15,14 @@ export class HospitalsRoutes {
     );
 
     // Definir las rutas
-    router.get("/", controller.getHospitals);
+    router.get("/", [AuthMiddleware.validateJwt], controller.getHospitals);
     router.post("/", [AuthMiddleware.validateJwt], controller.createHospital);
-    router.put("/:id", controller.updateHospital);
-    router.delete("/:id", controller.deleteHospital);
+    router.put("/:id", [AuthMiddleware.validateJwt], controller.updateHospital);
+    router.delete(
+      "/:id",
+      [AuthMiddleware.validateJwt],
+      controller.deleteHospital
+    );
     return router;
   }
 }
