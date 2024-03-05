@@ -1,21 +1,24 @@
 import { model, Schema } from "mongoose";
 
-const MedicalSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Name is required"],
-    },
-    img: {
-      type: String,
-    },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "Hospital",
-    },
+const MedicalSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, "Name is required"],
   },
-  { collection: "Medicals" }
-);
+  img: {
+    type: String,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  hospital: {
+    type: Schema.Types.ObjectId,
+    ref: "Hospital",
+    required: true,
+  },
+});
 
 MedicalSchema.set("toJSON", {
   virtuals: true,
@@ -29,4 +32,4 @@ MedicalSchema.set("toJSON", {
 // userSchema.method('toJSON', function () {
 // })
 
-export const MedicalModel = model("Meddical", MedicalSchema);
+export const MedicalModel = model("Medical", MedicalSchema);

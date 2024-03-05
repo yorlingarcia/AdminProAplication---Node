@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import {
   CustomError,
   LoginUserDto,
-  RegisterUserDto,
+  CreateUserDto,
   UserEntity,
 } from "../../domain";
-import { UpdateUserDto } from "../../domain/dtos/auth/update-user.dto";
+import { UpdateUserDto } from "../../domain/dtos/user/update-user.dto";
 import { UserService } from "../services/user.service";
 import { HandleErrorService } from "../services/handle-error.service";
 import { MedicalService } from "../services/medical.service";

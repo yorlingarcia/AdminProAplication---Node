@@ -1,7 +1,8 @@
 export * from "./entities/user.entity";
 
-export * from "./dtos/auth/register-user.dto";
-export * from "./dtos/auth/update-user.dto";
+export * from "./dtos/user/create-user.dto";
+export * from "./dtos/user/update-user.dto";
 export * from "./dtos/auth/login-user.dto";
+export * from "./dtos/hospital/create-hospital.dto";
 
 export * from "./errors/custom.error";

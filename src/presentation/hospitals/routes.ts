@@ -16,7 +16,7 @@ export class HospitalsRoutes {
 
     // Definir las rutas
     router.get("/", controller.getHospitals);
-    router.post("/", controller.createHospital);
+    router.post("/", [AuthMiddleware.validateJwt], controller.createHospital);
     router.put("/:id", controller.updateHospital);
     router.delete("/:id", controller.deleteHospital);
     return router;

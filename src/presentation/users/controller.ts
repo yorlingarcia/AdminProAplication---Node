@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { RegisterUserDto } from "../../domain";
-import { UpdateUserDto } from "../../domain/dtos/auth/update-user.dto";
+import { CreateUserDto } from "../../domain";
+import { UpdateUserDto } from "../../domain/dtos/user/update-user.dto";
 import { UserService } from "../services/user.service";
 import { HandleErrorService } from "../services/handle-error.service";
 
@@ -11,7 +11,7 @@ export class UsersController {
   ) {}
 
   createUser = async (req: Request, res: Response) => {
-    const [error, registerUserDto] = RegisterUserDto.create({
+    const [error, registerUserDto] = CreateUserDto.create({
       ...req.body,
     });
 

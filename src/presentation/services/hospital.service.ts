@@ -1,45 +1,43 @@
 import { JwtAdapter, bcryptAdapter } from "../../config";
-import { UserModel } from "../../data";
-import { CustomError, LoginUserDto, UserEntity } from "../../domain";
-import { RegisterUserDto } from "../../domain/dtos/auth/register-user.dto";
+import { HospitalModel } from "../../data";
+import { CreateHospitalDto, CustomError } from "../../domain";
+import { CreateUserDto } from "../../domain/dtos/user/create-user.dto";
 // import { JwtAdapter, bcryptAdapter, envs } from "../../config";
 // import { EmailService } from "./email.service";
-import { UpdateUserDto } from "../../domain/dtos/auth/update-user.dto";
 
 export class HospitalService {
   constructor() {}
   // constructor(private readonly emailService: EmailService) {}
 
-  public async createHospital() {
-    // const existEmail = await UserModel.findOne({
+  public async createHospital(createHospitalDto: CreateHospitalDto) {
+    // const existEmail = await HospitalModel.findOne({
     //   email: registerUserDto.email,
     // });
     // if (existEmail) throw CustomError.badRequest("Email already exist");
 
-    // try {
-    //   const user = new UserModel(registerUserDto);
+    try {
+      const hospital = new HospitalModel(createHospitalDto);
 
-    //   // Encriptar password
-    //   user.password = bcryptAdapter.hash(registerUserDto.password);
+      // Encriptar password
+      // user.password = bcryptAdapter.hash(registerUserDto.password);
 
-    //   await user.save();
+      await hospital.save();
 
-    //   const { password, ...userEntity } = UserEntity.fromObject(user);
+      // const { password, ...userEntity } = UserEntity.fromObject(user);
 
-    //   const token = await JwtAdapter.generateToken({
-    //     id: userEntity.id,
-    //     email: userEntity.email,
-    //   });
-    //   if (!token) throw CustomError.internalServer("Error while creating JWT");
+      // const token = await JwtAdapter.generateToken({
+      //   id: userEntity.id,
+      //   email: userEntity.email,
+      // });
+      // if (!token) throw CustomError.internalServer("Error while creating JWT");
 
-    //   return {
-    //     user: userEntity,
-    //     token,
-    //   };
-    // } catch (error) {
-    //   throw CustomError.internalServer(`${error}`);
-    // }
-    return "Create Hospital";
+      return {
+        hospital: hospital,
+        // token,
+      };
+    } catch (error) {
+      throw CustomError.internalServer(`${error}`);
+    }
   }
 
   public async getHospitals() {

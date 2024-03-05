@@ -1,10 +1,10 @@
 import { JwtAdapter, bcryptAdapter } from "../../config";
 import { UserModel } from "../../data";
 import { CustomError, LoginUserDto, UserEntity } from "../../domain";
-import { RegisterUserDto } from "../../domain/dtos/auth/register-user.dto";
+import { CreateUserDto } from "../../domain/dtos/user/create-user.dto";
 // import { JwtAdapter, bcryptAdapter, envs } from "../../config";
 // import { EmailService } from "./email.service";
-import { UpdateUserDto } from "../../domain/dtos/auth/update-user.dto";
+import { UpdateUserDto } from "../../domain/dtos/user/update-user.dto";
 
 export class AuthService {
   constructor() {}
