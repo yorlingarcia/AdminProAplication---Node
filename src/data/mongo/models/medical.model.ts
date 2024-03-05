@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-const HospitalSchema = new Schema(
+const MedicalSchema = new Schema(
   {
     name: {
       type: String,
@@ -11,13 +11,13 @@ const HospitalSchema = new Schema(
     },
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Hospital",
     },
   },
-  { collection: "hospitals" }
+  { collection: "Medicals" }
 );
 
-HospitalSchema.set("toJSON", {
+MedicalSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret, options) {
@@ -29,4 +29,4 @@ HospitalSchema.set("toJSON", {
 // userSchema.method('toJSON', function () {
 // })
 
-export const HospitalModel = model("Hospitals", HospitalSchema);
+export const MedicalModel = model("Meddical", MedicalSchema);
