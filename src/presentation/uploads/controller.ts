@@ -10,11 +10,12 @@ export class UploadController {
   ) {}
 
   uploadFile = async (req: Request, res: Response) => {
+    const id = req.params.id;
     const type = req.params.type;
     const file = req.files?.files as UploadedFile;
 
     this.uploadService
-      .uploadSingle(file, `uploads/${type}`)
+      .uploadSingle(id, file, type)
       .then((uploaded) => res.json(uploaded))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };

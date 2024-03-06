@@ -49,7 +49,7 @@ export class UserService {
 
       const [total, users] = await Promise.all([
         UserModel.countDocuments(),
-        UserModel.find({}, "name email role google")
+        UserModel.find({}, "name email role google img")
           .skip((page - 1) * limit)
           .limit(limit),
       ]);

@@ -1,14 +1,10 @@
-import { JwtAdapter, Uuid, bcryptAdapter } from "../../config";
-import { HospitalModel, MedicalModel, UserModel } from "../../data";
-import { CustomError, PaginationDto, UserEntity } from "../../domain";
-import { CreateUserDto } from "../../domain/dtos/user/create-user.dto";
-// import { JwtAdapter, bcryptAdapter, envs } from "../../config";
-// import { EmailService } from "./email.service";
-import { UpdateUserDto } from "../../domain/dtos/user/update-user.dto";
+import { Uuid } from "../../config";
+import { CustomError } from "../../domain";
 
 import { UploadedFile } from "express-fileupload";
 import fs from "fs";
 import path from "path";
+import { UpdateImg } from "../helpers/update-img";
 
 export class UploadService {
   constructor(private readonly uuid = Uuid.v4) {}
@@ -20,10 +16,12 @@ export class UploadService {
   }
 
   async uploadSingle(
+    id: string,
     file: UploadedFile,
-    folder: string = "uploads",
-    validExtensions: string[] = ["png", "jpg", "jepg", "gif"]
+    type: string,
+    validExtensions: string[] = ["png", "jpg", "jpeg", "gif"]
   ) {
+    const folder = type ? `uploads/${type}` : "uploads";
     try {
       const fileExtension = file.mimetype.split("/").at(1) ?? "";
 
@@ -38,6 +36,8 @@ export class UploadService {
       const fileName = `${this.uuid()}.${fileExtension}`;
 
       file.mv(`${destination}/${fileName}`);
+
+      UpdateImg(type, id, fileName);
 
       return { fileName };
     } catch (error) {
