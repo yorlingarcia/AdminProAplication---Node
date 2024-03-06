@@ -44,4 +44,13 @@ export class UploadService {
       throw error;
     }
   }
+
+  async getFiles(type: string, photo: string) {
+    let pathImg = path.join(__dirname, "../../", `uploads/${type}/${photo}`);
+    if (!fs.existsSync(pathImg)) {
+      // throw CustomError.badRequest(`Not Found directory`);
+      return path.join(__dirname, "../../", `uploads/no-img.jpg`);
+    }
+    return pathImg;
+  }
 }

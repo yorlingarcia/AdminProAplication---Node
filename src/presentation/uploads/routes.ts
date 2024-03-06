@@ -13,14 +13,20 @@ export class UploadRoutes {
     const handleErrorService = new HandleErrorService();
     const controller = new UploadController(uploadService, handleErrorService);
 
-    router.use(FileUploadMiddleware.containFiles);
+    // router.use(FileUploadMiddleware.containFiles);
     router.use(TypeMiddleware.validTypes(["users", "hospitals", "medicals"]));
 
     // Definir las rutas
     router.put(
       "/:type/:id",
-      [AuthMiddleware.validateJwt],
+      [FileUploadMiddleware.containFiles, AuthMiddleware.validateJwt],
       controller.uploadFile
+    );
+
+    router.get(
+      "/:type/:photo",
+      [AuthMiddleware.validateJwt],
+      controller.getFile
     );
 
     return router;

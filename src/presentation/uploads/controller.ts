@@ -19,4 +19,14 @@ export class UploadController {
       .then((uploaded) => res.json(uploaded))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };
+
+  getFile = async (req: Request, res: Response) => {
+    const photo = req.params.photo;
+    const type = req.params.type;
+
+    this.uploadService
+      .getFiles(type, photo)
+      .then((path) => res.sendFile(path))
+      .catch((error) => this.handleErrorService.handleError(error, res));
+  };
 }
