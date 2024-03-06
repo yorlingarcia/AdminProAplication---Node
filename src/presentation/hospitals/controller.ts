@@ -34,7 +34,7 @@ export class HospitalsController {
   getHospitals = async (req: Request, res: Response) => {
     this.hospitalService
       .getHospitals()
-      .then((users) => res.json(users))
+      .then((hospitals) => res.json(hospitals))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };
 

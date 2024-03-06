@@ -41,13 +41,15 @@ export class HospitalService {
   }
 
   public async getHospitals() {
-    // try {
-    //   const users = await UserModel.find({}, "name email role google");
-    //   return users;
-    // } catch (error) {
-    //   throw CustomError.internalServer(`${error}`);
-    // }
-    return "Get Hospitals";
+    try {
+      const hospitals = await HospitalModel.find().populate(
+        "user",
+        "name image"
+      );
+      return { hospitals };
+    } catch (error) {
+      throw CustomError.internalServer(`${error}`);
+    }
   }
 
   public async updateHospital() {
