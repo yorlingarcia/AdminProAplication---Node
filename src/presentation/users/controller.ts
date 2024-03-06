@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateUserDto } from "../../domain";
+import { CreateUserDto, PaginationDto } from "../../domain";
 import { UpdateUserDto } from "../../domain/dtos/user/update-user.dto";
 import { UserService } from "../services/user.service";
 import { HandleErrorService } from "../services/handle-error.service";
@@ -24,8 +24,12 @@ export class UsersController {
   };
 
   getUsers = async (req: Request, res: Response) => {
+    const { page = 1, limit = 5 } = req.query;
+    const [error, paginationDto] = PaginationDto.create(+page, +limit);
+    if (error) return res.status(400).json({ error });
+
     this.userService
-      .getUsers()
+      .getUsers(paginationDto!)
       .then((users) => res.json(users))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };

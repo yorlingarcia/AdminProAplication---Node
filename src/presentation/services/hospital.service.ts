@@ -42,10 +42,7 @@ export class HospitalService {
 
   public async getHospitals() {
     try {
-      const hospitals = await HospitalModel.find().populate(
-        "user",
-        "name image"
-      );
+      const hospitals = await HospitalModel.find().populate("user", "name img");
       return { hospitals };
     } catch (error) {
       throw CustomError.internalServer(`${error}`);

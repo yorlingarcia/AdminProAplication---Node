@@ -41,13 +41,14 @@ export class MedicalService {
   }
 
   public async getMedicals() {
-    // try {
-    //   const users = await UserModel.find({}, "name email role google");
-    //   return users;
-    // } catch (error) {
-    //   throw CustomError.internalServer(`${error}`);
-    // }
-    return "Get Medicals";
+    try {
+      const medical = await MedicalModel.find()
+        .populate("user", "name img")
+        .populate("hospital", "name img");
+      return { medical };
+    } catch (error) {
+      throw CustomError.internalServer(`${error}`);
+    }
   }
 
   public async updateMedical() {
