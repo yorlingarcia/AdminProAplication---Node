@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CustomError, LoginUserDto } from "../../domain";
+import { CustomError, GoogleSignInDto, LoginUserDto } from "../../domain";
 import { AuthService } from "../services/auth.service";
 import { HandleErrorService } from "../services/handle-error.service";
 
@@ -19,15 +19,19 @@ export class AuthController {
     this.authService
       .loginUser(loginUserDto!)
       .then((user) => res.status(201).json(user))
-      .catch((error) => this.handleError(error, res));
+      .catch((error) => this.handleErrorservice.handleError(error, res));
   };
 
-  private handleError = (error: unknown, res: Response) => {
-    if (error instanceof CustomError) {
-      return res.status(error.statusCode).json({ error: error.message });
-    }
-    console.log(`${error}`);
+  googleSignIn = async (req: Request, res: Response) => {
+    const [error, googlesignInDto] = GoogleSignInDto.create({
+      ...req.body,
+    });
 
-    return res.status(500).json({ error: "Internal server error" });
+    if (error) return res.status(400).json({ error });
+
+    this.authService
+      .googleSignIn(googlesignInDto!)
+      .then((user) => res.status(201).json(user))
+      .catch((error) => this.handleErrorservice.handleError(error, res));
   };
 }

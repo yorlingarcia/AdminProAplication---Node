@@ -6,5 +6,6 @@ export * from "./dtos/auth/login-user.dto";
 export * from "./dtos/hospital/create-hospital.dto";
 export * from "./dtos/medical/create-medical.dto";
 export * from "./dtos/shared/pagination.dto";
+export * from "./dtos/auth/google-sign-in.dto";
 
 export * from "./errors/custom.error";

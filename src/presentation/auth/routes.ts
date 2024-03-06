@@ -12,6 +12,7 @@ export class AuthRoutes {
 
     // Definir las rutas
     router.post("/", controller.loginUser);
+    router.post("/google", controller.googleSignIn);
     return router;
   }
 }
