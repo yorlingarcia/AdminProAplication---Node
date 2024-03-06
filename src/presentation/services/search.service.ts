@@ -1,5 +1,5 @@
 import { JwtAdapter, bcryptAdapter } from "../../config";
-import { UserModel } from "../../data";
+import { HospitalModel, MedicalModel, UserModel } from "../../data";
 import { CustomError, PaginationDto, UserEntity } from "../../domain";
 import { CreateUserDto } from "../../domain/dtos/user/create-user.dto";
 // import { JwtAdapter, bcryptAdapter, envs } from "../../config";
@@ -10,7 +10,13 @@ export class SearchService {
   constructor() {}
   // constructor(private readonly emailService: EmailService) {}
 
-  public async search(paginationDto: PaginationDto) {
+  public async search(search: string) {
+    const regularExp = RegExp(search, "i");
+    const [users, hospitals, medicals] = await Promise.all([
+      UserModel.find({ name: regularExp }),
+      HospitalModel.find({ name: regularExp }),
+      MedicalModel.find({ name: regularExp }),
+    ]);
     // const { page, limit } = paginationDto;
 
     // try {
@@ -34,6 +40,11 @@ export class SearchService {
     // } catch (error) {
     //   throw CustomError.internalServer(`${error}`);
     // }
-    return "Search!!";
+    return {
+      type: "search",
+      users,
+      hospitals,
+      medicals,
+    };
   }
 }

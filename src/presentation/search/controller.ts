@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { PaginationDto } from "../../domain";
 import { HandleErrorService } from "../services/handle-error.service";
 import { SearchService } from "../services/search.service";
 
@@ -10,12 +9,10 @@ export class SearchController {
   ) {}
 
   search = async (req: Request, res: Response) => {
-    const { page = 1, limit = 5 } = req.query;
-    const [error, paginationDto] = PaginationDto.create(+page, +limit);
-    if (error) return res.status(400).json({ error });
+    const search = req.params.search;
 
     this.searchService
-      .search(paginationDto!)
+      .search(search)
       .then((users) => res.json(users))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };
