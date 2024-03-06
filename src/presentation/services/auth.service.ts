@@ -6,11 +6,7 @@ import {
   LoginUserDto,
   UserEntity,
 } from "../../domain";
-import { CreateUserDto } from "../../domain/dtos/user/create-user.dto";
-// import { JwtAdapter, bcryptAdapter, envs } from "../../config";
-// import { EmailService } from "./email.service";
-import { UpdateUserDto } from "../../domain/dtos/user/update-user.dto";
-
+import { googleVerify } from "../helpers/google-verify";
 export class AuthService {
   constructor() {}
   // constructor(private readonly emailService: EmailService) {}
@@ -45,6 +41,39 @@ export class AuthService {
   }
 
   public async googleSignIn(googlesignInDto: GoogleSignInDto) {
-    return googlesignInDto;
+    try {
+      const { email, name, picture } = await googleVerify(
+        googlesignInDto.token
+      );
+
+      const existUser = await UserModel.findOne({ email });
+      let user;
+      if (!existUser) {
+        user = new UserModel({
+          name,
+          email,
+          password: "@@@",
+          img: picture,
+          google: true,
+        });
+      } else {
+        user = existUser;
+        user.google = true;
+      }
+
+      await user.save();
+
+      const { password, ...userEntity } = UserEntity.fromObject(user);
+      const token = await JwtAdapter.generateToken({
+        id: userEntity.id,
+        email: userEntity.email,
+      });
+      if (!token) throw CustomError.internalServer("Error while creating JWT");
+
+      return user;
+    } catch (error) {
+      console.log(error);
+      throw CustomError.badRequest("El token proporciando no es correcto");
+    }
   }
 }
