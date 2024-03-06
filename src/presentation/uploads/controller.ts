@@ -18,15 +18,4 @@ export class UploadController {
       .then((uploaded) => res.json(uploaded))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };
-
-  uploadMultipleFile = async (req: Request, res: Response) => {
-    const type = req.params.type;
-
-    const files = req.body.files as UploadedFile[];
-
-    this.uploadService
-      .uploadMultiple(files, `uploads/${type}`)
-      .then((uploaded) => res.json(uploaded))
-      .catch((error) => this.handleErrorService.handleError(error, res));
-  };
 }
