@@ -17,34 +17,38 @@ export class SearchService {
       HospitalModel.find({ name: regularExp }),
       MedicalModel.find({ name: regularExp }),
     ]);
-    // const { page, limit } = paginationDto;
-
-    // try {
-    //   // const users = await UserModel.find({}, "name email role google");
-
-    //   const [total, users] = await Promise.all([
-    //     UserModel.countDocuments(),
-    //     UserModel.find({}, "name email role google")
-    //       .skip((page - 1) * limit)
-    //       .limit(limit),
-    //   ]);
-    //   return {
-    //     page,
-    //     limit,
-    //     total,
-    //     next: `/api/users?page=${page + 1}&limit=${limit}`,
-    //     prev:
-    //       page - 1 > 0 ? `/api/users?page=${page - 1}&limit=${limit}` : null,
-    //     users,
-    //   };
-    // } catch (error) {
-    //   throw CustomError.internalServer(`${error}`);
-    // }
     return {
-      type: "search",
       users,
       hospitals,
       medicals,
+    };
+  }
+
+  public async searchCollection([table, search]: string[]) {
+    const regularExp = RegExp(search, "i");
+    let data;
+    switch (table) {
+      case "users":
+        data = await UserModel.find({ name: regularExp });
+        break;
+      case "hospitals":
+        data = await HospitalModel.find({ name: regularExp }).populate(
+          "user",
+          "name img"
+        );
+        break;
+      case "medicals":
+        data = await MedicalModel.find({ name: regularExp })
+          .populate("user", "name img")
+          .populate("hospital", "name img");
+        break;
+      default:
+        throw CustomError.badRequest(
+          'La tabla tiene que ser "users", "hospitals", "medicals"'
+        );
+    }
+    return {
+      data,
     };
   }
 }

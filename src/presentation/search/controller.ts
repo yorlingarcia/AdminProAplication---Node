@@ -16,4 +16,13 @@ export class SearchController {
       .then((users) => res.json(users))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };
+
+  searchCollection = async (req: Request, res: Response) => {
+    const params = [req.params.table, req.params.search];
+
+    this.searchService
+      .searchCollection(params)
+      .then((users) => res.json(users))
+      .catch((error) => this.handleErrorService.handleError(error, res));
+  };
 }

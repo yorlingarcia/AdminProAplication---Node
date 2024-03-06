@@ -13,6 +13,11 @@ export class SearchRoutes {
 
     // Definir las rutas
     router.get("/:search", [AuthMiddleware.validateJwt], controller.search);
+    router.get(
+      "/colection/:table/:search",
+      [AuthMiddleware.validateJwt],
+      controller.searchCollection
+    );
 
     return router;
   }
