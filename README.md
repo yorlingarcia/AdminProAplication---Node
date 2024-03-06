@@ -16,6 +16,8 @@ Es necesario tener en cuenta que la base de datos involucrada es MongoDb Atlas, 
 - express-validator
 - bcrypt
 - jsonwebtoken
+- express-fileupload
+- uuid
 
 ## Instalaciones requeridas
 

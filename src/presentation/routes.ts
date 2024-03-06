@@ -4,6 +4,7 @@ import { AuthRoutes } from "./auth/routes";
 import { HospitalsRoutes } from "./hospitals/routes";
 import { MedicalsRoutes } from "./medicals/routes";
 import { SearchRoutes } from "./search/routes";
+import { UploadRoutes } from "./uploads/routes";
 
 export class AppRoutes {
   static get routes(): Router {
@@ -15,6 +16,7 @@ export class AppRoutes {
     router.use("/api/hospitals", HospitalsRoutes.routes);
     router.use("/api/medicals", MedicalsRoutes.routes);
     router.use("/api/search", SearchRoutes.routes);
+    router.use("/api/upload", UploadRoutes.routes);
 
     return router;
   }

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { envs } from "./envs";
+import { envs } from "./envs.adapter";
 
 const JWT_SEED = envs.JWT_SEED;
 
