@@ -52,11 +52,10 @@ export class HospitalService {
     }
   }
 
-  public async deleteHospital() {
-    // const deleteUser = await UserModel.findByIdAndDelete(id);
-    // if (!deleteUser)
-    //   throw CustomError.notFound(`User with id "${id}" not found`);
-    // return deleteUser;
-    return "Delete Hospital";
+  public async deleteHospital(id: string) {
+    const deleteUser = await HospitalModel.findByIdAndDelete(id);
+    if (!deleteUser)
+      throw CustomError.notFound(`User with id "${id}" not found`);
+    return deleteUser;
   }
 }

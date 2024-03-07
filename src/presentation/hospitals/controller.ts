@@ -45,9 +45,9 @@ export class HospitalsController {
   };
 
   deleteHospital = async (req: Request, res: Response) => {
-    // const id = req.params.id;
+    const id = req.params.id;
     this.hospitalService
-      .deleteHospital()
+      .deleteHospital(id)
       .then((resp) => res.json(resp))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };
