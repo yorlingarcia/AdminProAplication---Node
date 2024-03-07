@@ -11,6 +11,7 @@ export * from "./dtos/hospital/create-hospital.dto";
 export * from "./dtos/hospital/update-hospital.dto";
 
 export * from "./dtos/medical/create-medical.dto";
+export * from "./dtos/medical/update-medical.dto";
 
 export * from "./dtos/shared/pagination.dto";
 

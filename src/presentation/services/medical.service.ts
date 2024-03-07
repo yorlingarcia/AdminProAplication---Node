@@ -1,6 +1,11 @@
 import { JwtAdapter, bcryptAdapter } from "../../config";
 import { MedicalModel } from "../../data";
-import { CreateMedicalDto, CustomError, UserEntity } from "../../domain";
+import {
+  CreateMedicalDto,
+  CustomError,
+  UpdateMedicalDto,
+  UserEntity,
+} from "../../domain";
 // import { JwtAdapter, bcryptAdapter, envs } from "../../config";
 // import { EmailService } from "./email.service";
 
@@ -51,32 +56,35 @@ export class MedicalService {
     }
   }
 
-  public async updateMedical() {
-    // const id = updateUserDto.id;
-    // const user = await UserModel.findById(id);
-    // if (!user) throw CustomError.notFound(`User with id "${id}" not found`);
+  public async updateMedical(updateMedicalDto: UpdateMedicalDto) {
+    const id = updateMedicalDto.id;
+    const medical = await MedicalModel.findById(id);
+    if (!medical)
+      throw CustomError.notFound(`Medical with id "${id}" not found`);
 
-    // const existEmail = await UserModel.findOne({
-    //   email: updateUserDto.email,
-    // });
-    // if (existEmail && user.email != updateUserDto.email)
-    //   throw CustomError.badRequest("Email already exist");
-    // try {
-    //   const updateUSer = await UserModel.findByIdAndUpdate(id, updateUserDto, {
-    //     new: true,
-    //   });
-    //   return updateUSer;
-    // } catch (error) {
-    //   throw CustomError.internalServer(`${error}`);
-    // }
-    return "Update Medical";
+    try {
+      const cambioMedical = {
+        name: updateMedicalDto.name,
+        user: updateMedicalDto.user.id,
+        hospital: updateMedicalDto.hospitalId,
+      };
+      const updateUSer = await MedicalModel.findByIdAndUpdate(
+        id,
+        cambioMedical,
+        {
+          new: true,
+        }
+      );
+      return updateUSer;
+    } catch (error) {
+      throw CustomError.internalServer(`${error}`);
+    }
   }
 
-  public async deleteMedical() {
-    // const deleteUser = await UserModel.findByIdAndDelete(id);
-    // if (!deleteUser)
-    //   throw CustomError.notFound(`User with id "${id}" not found`);
-    // return deleteUser;
-    return "Delete Medical";
+  public async deleteMedical(id: string) {
+    const deleteUser = await MedicalModel.findByIdAndDelete(id);
+    if (!deleteUser)
+      throw CustomError.notFound(`Medical with id "${id}" not found`);
+    return deleteUser;
   }
 }

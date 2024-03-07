@@ -39,9 +39,13 @@ export class HospitalService {
       throw CustomError.notFound(`Hospital with id "${id}" not found`);
 
     try {
+      const cambioHospital = {
+        name: updateHospitalDto.name,
+        user: updateHospitalDto.user.id,
+      };
       const updateHospital = await HospitalModel.findByIdAndUpdate(
         id,
-        updateHospitalDto,
+        cambioHospital,
         {
           new: true,
         }
@@ -55,7 +59,7 @@ export class HospitalService {
   public async deleteHospital(id: string) {
     const deleteUser = await HospitalModel.findByIdAndDelete(id);
     if (!deleteUser)
-      throw CustomError.notFound(`User with id "${id}" not found`);
+      throw CustomError.notFound(`Hospital with id "${id}" not found`);
     return deleteUser;
   }
 }

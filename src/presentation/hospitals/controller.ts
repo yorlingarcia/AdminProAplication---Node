@@ -33,8 +33,8 @@ export class HospitalsController {
 
   updateHospital = async (req: Request, res: Response) => {
     const [error, updateHospitalDto] = UpdateHospitalDto.update({
-      ...req.body,
       id: req.params.id,
+      ...req.body,
     });
 
     if (error) return res.status(400).json({ error });

@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { CustomError, UserEntity, CreateMedicalDto } from "../../domain";
+import {
+  CustomError,
+  UserEntity,
+  CreateMedicalDto,
+  UpdateMedicalDto,
+} from "../../domain";
 import { HandleErrorService } from "../services/handle-error.service";
 import { MedicalService } from "../services/medical.service";
 
@@ -31,25 +36,26 @@ export class MedicalsController {
   };
 
   updateMedical = async (req: Request, res: Response) => {
-    // const id = req.params.id;
+    const id = req.params.id;
 
-    // const [error, updateUserDto] = UpdateUserDto.update({
-    //   id,
-    //   ...req.body,
-    // });
+    const [error, updateMedicalDto] = UpdateMedicalDto.update({
+      id,
+      hospitalId: req.params.hospital,
+      ...req.body,
+    });
 
-    // if (error) return res.status(400).json({ error });
+    if (error) return res.status(400).json({ error });
 
     this.medicalService
-      .updateMedical()
+      .updateMedical(updateMedicalDto!)
       .then((resp) => res.json(resp))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };
 
   deleteMedical = async (req: Request, res: Response) => {
-    // const id = req.params.id;
+    const id = req.params.id;
     this.medicalService
-      .deleteMedical()
+      .deleteMedical(id)
       .then((resp) => res.json(resp))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };
