@@ -34,4 +34,13 @@ export class AuthController {
       .then((user) => res.status(201).json(user))
       .catch((error) => this.handleErrorservice.handleError(error, res));
   };
+
+  renewToken = async (req: Request, res: Response) => {
+    const user = req.body.user;
+
+    this.authService
+      .renewToken(user)
+      .then((user) => res.status(201).json(user))
+      .catch((error) => this.handleErrorservice.handleError(error, res));
+  };
 }

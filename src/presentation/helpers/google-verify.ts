@@ -10,7 +10,7 @@ export const googleVerify = async (token: string) => {
   });
   const payload = ticket.getPayload();
 
-  const userid = payload["sub"];
+  // const userid = payload["sub"];
   // If request specified a G Suite domain:
   // const domain = payload['hd'];
   return payload;

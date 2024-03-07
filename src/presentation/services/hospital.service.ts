@@ -1,39 +1,21 @@
-import { JwtAdapter, bcryptAdapter } from "../../config";
 import { HospitalModel } from "../../data";
-import { CreateHospitalDto, CustomError } from "../../domain";
-import { CreateUserDto } from "../../domain/dtos/user/create-user.dto";
-// import { JwtAdapter, bcryptAdapter, envs } from "../../config";
-// import { EmailService } from "./email.service";
+import {
+  CreateHospitalDto,
+  CustomError,
+  UpdateHospitalDto,
+} from "../../domain";
 
 export class HospitalService {
   constructor() {}
-  // constructor(private readonly emailService: EmailService) {}
 
   public async createHospital(createHospitalDto: CreateHospitalDto) {
-    // const existEmail = await HospitalModel.findOne({
-    //   email: registerUserDto.email,
-    // });
-    // if (existEmail) throw CustomError.badRequest("Email already exist");
-
     try {
       const hospital = new HospitalModel(createHospitalDto);
 
-      // Encriptar password
-      // user.password = bcryptAdapter.hash(registerUserDto.password);
-
       await hospital.save();
-
-      // const { password, ...userEntity } = UserEntity.fromObject(user);
-
-      // const token = await JwtAdapter.generateToken({
-      //   id: userEntity.id,
-      //   email: userEntity.email,
-      // });
-      // if (!token) throw CustomError.internalServer("Error while creating JWT");
 
       return {
         hospital: hospital,
-        // token,
       };
     } catch (error) {
       throw CustomError.internalServer(`${error}`);
@@ -49,25 +31,25 @@ export class HospitalService {
     }
   }
 
-  public async updateHospital() {
-    // const id = updateUserDto.id;
-    // const user = await UserModel.findById(id);
-    // if (!user) throw CustomError.notFound(`User with id "${id}" not found`);
+  public async updateHospital(updateHospitalDto: UpdateHospitalDto) {
+    const id = updateHospitalDto.id;
 
-    // const existEmail = await UserModel.findOne({
-    //   email: updateUserDto.email,
-    // });
-    // if (existEmail && user.email != updateUserDto.email)
-    //   throw CustomError.badRequest("Email already exist");
-    // try {
-    //   const updateUSer = await UserModel.findByIdAndUpdate(id, updateUserDto, {
-    //     new: true,
-    //   });
-    //   return updateUSer;
-    // } catch (error) {
-    //   throw CustomError.internalServer(`${error}`);
-    // }
-    return "Update Hospital";
+    const hospital = await HospitalModel.findById(id);
+    if (!hospital)
+      throw CustomError.notFound(`Hospital with id "${id}" not found`);
+
+    try {
+      const updateHospital = await HospitalModel.findByIdAndUpdate(
+        id,
+        updateHospitalDto,
+        {
+          new: true,
+        }
+      );
+      return updateHospital;
+    } catch (error) {
+      throw CustomError.internalServer(`${error}`);
+    }
   }
 
   public async deleteHospital() {

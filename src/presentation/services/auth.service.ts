@@ -76,4 +76,15 @@ export class AuthService {
       throw CustomError.badRequest("El token proporciando no es correcto");
     }
   }
+
+  public async renewToken(user: UserEntity) {
+    const { password, ...userEntity } = UserEntity.fromObject(user);
+    const token = await JwtAdapter.generateToken({
+      id: userEntity.id,
+      email: userEntity.email,
+    });
+    if (!token) throw CustomError.internalServer("Error while creating JWT");
+    return token;
+  }
 }
+9;
