@@ -70,7 +70,10 @@ export class AuthService {
       });
       if (!token) throw CustomError.internalServer("Error while creating JWT");
 
-      return user;
+      return {
+        user,
+        token,
+      };
     } catch (error) {
       console.log(error);
       throw CustomError.badRequest("El token proporciando no es correcto");
@@ -84,7 +87,7 @@ export class AuthService {
       email: userEntity.email,
     });
     if (!token) throw CustomError.internalServer("Error while creating JWT");
-    return token;
+    return { token };
   }
 }
 9;

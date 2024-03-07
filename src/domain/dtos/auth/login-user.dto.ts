@@ -13,7 +13,6 @@ export class LoginUserDto {
     if (!regularExps.email.test(email))
       return ["Email is not valid", undefined];
     if (!password) return ["Missing password", undefined];
-    if (password.length < 6) return ["Password too short"];
 
     return [undefined, new LoginUserDto(email, password)];
   }
