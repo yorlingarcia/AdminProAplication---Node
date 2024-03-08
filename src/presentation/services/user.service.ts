@@ -78,9 +78,29 @@ export class UserService {
     if (existEmail && user.email != updateUserDto.email)
       throw CustomError.badRequest("Email already exist");
     try {
-      const updateUSer = await UserModel.findByIdAndUpdate(id, updateUserDto, {
-        new: true,
-      });
+      let actualizarCampos;
+      if (user.google) {
+        actualizarCampos = {
+          ...updateUserDto,
+          email: user.email,
+        };
+        if (user.email !== updateUserDto.email)
+          throw CustomError.badRequest(
+            `Usuarios de google no pueden actualizar su correo`
+          );
+      } else {
+        actualizarCampos = {
+          ...updateUserDto,
+        };
+      }
+
+      const updateUSer = await UserModel.findByIdAndUpdate(
+        id,
+        actualizarCampos,
+        {
+          new: true,
+        }
+      );
       return updateUSer;
     } catch (error) {
       throw CustomError.internalServer(`${error}`);
