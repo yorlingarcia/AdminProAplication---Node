@@ -36,14 +36,11 @@ export class UsersController {
 
   updateUser = async (req: Request, res: Response) => {
     const id = req.params.id;
-
     const [error, updateUserDto] = UpdateUserDto.update({
       id,
       ...req.body,
     });
-
     if (error) return res.status(400).json({ error });
-
     this.userService
       .updateUser(updateUserDto!)
       .then((resp) => res.json(resp))
