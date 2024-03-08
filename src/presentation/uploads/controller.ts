@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { HandleErrorService } from "../services/handle-error.service";
 import { UploadService } from "../services/upload.service";
 import { UploadedFile } from "express-fileupload";
+import { UpdatePhotoDto } from "../../domain";
 
 export class UploadController {
   constructor(
@@ -10,12 +11,16 @@ export class UploadController {
   ) {}
 
   uploadFile = async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const type = req.params.type;
-    const file = req.files?.files as UploadedFile;
+    const [error, updatePhotoDto] = UpdatePhotoDto.update({
+      id: req.params.id,
+      type: req.params.type,
+      files: req.files?.files as UploadedFile,
+    });
+
+    if (error) return res.status(400).json({ error });
 
     this.uploadService
-      .uploadSingle(id, file, type)
+      .uploadSingle(updatePhotoDto!)
       .then((uploaded) => res.json(uploaded))
       .catch((error) => this.handleErrorService.handleError(error, res));
   };

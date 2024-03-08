@@ -1,5 +1,5 @@
 import { Uuid } from "../../config";
-import { CustomError } from "../../domain";
+import { CustomError, UpdatePhotoDto } from "../../domain";
 
 import { UploadedFile } from "express-fileupload";
 import fs from "fs";
@@ -16,14 +16,14 @@ export class UploadService {
   }
 
   async uploadSingle(
-    id: string,
-    file: UploadedFile,
-    type: string,
+    updatePhotoDto: UpdatePhotoDto,
     validExtensions: string[] = ["png", "jpg", "jpeg", "gif"]
   ) {
+    const { id, type, files } = updatePhotoDto;
+
     const folder = type ? `uploads/${type}` : "uploads";
     try {
-      const fileExtension = file.mimetype.split("/").at(1) ?? "";
+      const fileExtension = files.mimetype.split("/").at(1) ?? "";
 
       if (!validExtensions.includes(fileExtension)) {
         throw CustomError.badRequest(
@@ -35,7 +35,7 @@ export class UploadService {
 
       const fileName = `${this.uuid()}.${fileExtension}`;
 
-      file.mv(`${destination}/${fileName}`);
+      files.mv(`${destination}/${fileName}`);
 
       UpdateImg(type, id, fileName);
 

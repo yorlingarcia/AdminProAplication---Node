@@ -15,4 +15,6 @@ export * from "./dtos/medical/update-medical.dto";
 
 export * from "./dtos/shared/pagination.dto";
 
+export * from "./dtos/photo/update-photo.dto";
+
 export * from "./errors/custom.error";

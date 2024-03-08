@@ -87,7 +87,7 @@ export class AuthService {
       email: userEntity.email,
     });
     if (!token) throw CustomError.internalServer("Error while creating JWT");
-    return { token };
+    return { user, token };
   }
 }
 9;

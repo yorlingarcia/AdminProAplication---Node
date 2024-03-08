@@ -25,7 +25,7 @@ export class UploadRoutes {
 
     router.get(
       "/:type/:photo",
-      [AuthMiddleware.validateJwt],
+      // [AuthMiddleware.validateJwt],
       controller.getFile
     );
 
