@@ -57,7 +57,10 @@ export class UserService {
         page,
         limit,
         total,
-        next: `/api/users?page=${page + 1}&limit=${limit}`,
+        next:
+          page * limit < total
+            ? `/api/users?page=${page + 1}&limit=${limit}`
+            : null,
         prev:
           page - 1 > 0 ? `/api/users?page=${page - 1}&limit=${limit}` : null,
         users,
