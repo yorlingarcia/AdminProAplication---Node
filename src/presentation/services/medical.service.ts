@@ -1,43 +1,21 @@
-import { JwtAdapter, bcryptAdapter } from "../../config";
 import { MedicalModel } from "../../data";
 import {
   CreateMedicalDto,
   CustomError,
+  PaginationDto,
   UpdateMedicalDto,
-  UserEntity,
 } from "../../domain";
-// import { JwtAdapter, bcryptAdapter, envs } from "../../config";
-// import { EmailService } from "./email.service";
 
 export class MedicalService {
   constructor() {}
-  // constructor(private readonly emailService: EmailService) {}
 
   public async createMedical(createMedicalDto: CreateMedicalDto) {
-    // const existEmail = await UserModel.findOne({
-    //   email: registerUserDto.email,
-    // });
-    // if (existEmail) throw CustomError.badRequest("Email already exist");
-
     try {
       const medical = new MedicalModel(createMedicalDto);
-
-      // Encriptar password
-      // user.password = bcryptAdapter.hash(registerUserDto.password);
-
       await medical.save();
-
-      // const { password, ...userEntity } = UserEntity.fromObject(user);
-
-      // const token = await JwtAdapter.generateToken({
-      //   id: userEntity.id,
-      //   email: userEntity.email,
-      // });
-      // if (!token) throw CustomError.internalServer("Error while creating JWT");
 
       return {
         medical: medical,
-        // token,
       };
     } catch (error) {
       console.log(error);
@@ -45,12 +23,48 @@ export class MedicalService {
     }
   }
 
-  public async getMedicals() {
+  public async getMedicals(paginationDto: PaginationDto) {
+    const { page, limit } = paginationDto;
     try {
-      const medical = await MedicalModel.find()
+      const [total, medicals] = await Promise.all([
+        MedicalModel.countDocuments(),
+        MedicalModel.find()
+          .populate("user", "name img")
+          .populate("hospital", "name img")
+          .skip((page - 1) * limit)
+          .limit(limit),
+      ]);
+
+      return {
+        page,
+        limit,
+        total,
+        next:
+          page * limit < total
+            ? `/api/hospitals?page=${page + 1}&limit=${limit}`
+            : null,
+        prev:
+          page - 1 > 0
+            ? `/api/hospitals?page=${page - 1}&limit=${limit}`
+            : null,
+        medicals,
+      };
+    } catch (error) {
+      throw CustomError.internalServer(`${error}`);
+    }
+  }
+
+  public async getMedicalById(id: string) {
+    try {
+      const medical = await MedicalModel.findById(id)
         .populate("user", "name img")
         .populate("hospital", "name img");
-      return { medical };
+
+      if (!medical)
+        throw CustomError.notFound(`Medical with id "${id}" not found`);
+      return {
+        medical,
+      };
     } catch (error) {
       throw CustomError.internalServer(`${error}`);
     }
@@ -58,15 +72,15 @@ export class MedicalService {
 
   public async updateMedical(updateMedicalDto: UpdateMedicalDto) {
     const id = updateMedicalDto.id;
-    const medical = await MedicalModel.findById(id);
-    if (!medical)
-      throw CustomError.notFound(`Medical with id "${id}" not found`);
 
     try {
+      const medical = await MedicalModel.findById(id);
+      if (!medical)
+        throw CustomError.notFound(`Medical with id "${id}" not found`);
       const cambioMedical = {
         name: updateMedicalDto.name,
         user: updateMedicalDto.user.id,
-        hospital: updateMedicalDto.hospitalId,
+        hospital: updateMedicalDto.hospital,
       };
       const updateUSer = await MedicalModel.findByIdAndUpdate(
         id,

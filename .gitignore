@@ -2,3 +2,18 @@ node_modules
 
 
 .env
+
+
+src/uploads/hospitals/*.jpg
+src/uploads/hospitals/*.png
+src/uploads/hospitals/*.jpeg
+
+
+src/uploads/users/*.jpg
+src/uploads/users/*.png
+src/uploads/users/*.jpeg
+
+
+src/uploads/medicals/*.jpg
+src/uploads/medicals/*.png
+src/uploads/medicals/*.jpeg

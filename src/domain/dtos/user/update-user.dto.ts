@@ -1,4 +1,7 @@
+import mongoose from "mongoose";
 import { regularExps } from "../../../config";
+
+const ObjectId = mongoose.Types.ObjectId;
 
 export class UpdateUserDto {
   private constructor(
@@ -16,6 +19,7 @@ export class UpdateUserDto {
     if (!regularExps.email.test(email))
       return ["Email is not valid", undefined];
     if (!role) return ["Missing role", undefined];
+    if (!ObjectId.isValid(id)) return [`Id "${id} no valido"`, undefined];
 
     return [undefined, new UpdateUserDto(id, name, email, role)];
   }

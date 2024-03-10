@@ -16,6 +16,7 @@ export class MedicalsRoutes {
 
     // Definir las rutas
     router.get("/", [AuthMiddleware.validateJwt], controller.getMedicals);
+    router.get("/:id", [AuthMiddleware.validateJwt], controller.getMedicalById);
     router.post("/", [AuthMiddleware.validateJwt], controller.createMedical);
     router.put("/:id", [AuthMiddleware.validateJwt], controller.updateMedical);
     router.delete(
