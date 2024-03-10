@@ -7,6 +7,7 @@ import {
   UserEntity,
 } from "../../domain";
 import { googleVerify } from "../helpers/google-verify";
+import { getMenuFrontEnd } from "../helpers/menu-fronend";
 export class AuthService {
   constructor() {}
   // constructor(private readonly emailService: EmailService) {}
@@ -34,6 +35,7 @@ export class AuthService {
       return {
         user: userEntity,
         token,
+        menu: getMenuFrontEnd(userEntity.role!),
       };
     } catch (error) {
       throw CustomError.internalServer(`${error}`);
@@ -73,6 +75,7 @@ export class AuthService {
       return {
         user,
         token,
+        menu: getMenuFrontEnd(userEntity.role!),
       };
     } catch (error) {
       console.log(error);
@@ -87,7 +90,7 @@ export class AuthService {
       email: userEntity.email,
     });
     if (!token) throw CustomError.internalServer("Error while creating JWT");
-    return { user, token };
+    return { user, token, menu: getMenuFrontEnd(userEntity.role!) };
   }
 }
 9;

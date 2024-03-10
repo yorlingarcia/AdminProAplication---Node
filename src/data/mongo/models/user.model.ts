@@ -23,6 +23,7 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
+    enum: ["USER_ROLE", "ADMIN_ROLE"],
     default: "USER_ROLE",
   },
   google: {

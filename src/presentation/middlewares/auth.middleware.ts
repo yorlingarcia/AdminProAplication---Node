@@ -43,4 +43,28 @@ export class AuthMiddleware {
       res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  static async validateAdminRole(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const id = req.body.user.id;
+    try {
+      const user = await UserModel.findById(id);
+
+      if (!user)
+        return res.status(401).json({ error: "Usuario no encontrado" });
+
+      if (user.role !== "ADMIN_ROLE")
+        return res
+          .status(401)
+          .json({ error: "No tiene privilegios de administrador" });
+
+      next();
+    } catch (error) {
+      console.log({ error });
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }

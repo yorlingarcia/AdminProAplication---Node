@@ -12,10 +12,22 @@ export class UsersRoutes {
     const controller = new UsersController(userService, handleErrorService);
 
     // Definir las rutas
-    router.get("/", [AuthMiddleware.validateJwt], controller.getUsers);
+    router.get(
+      "/",
+      [AuthMiddleware.validateJwt, AuthMiddleware.validateAdminRole],
+      controller.getUsers
+    );
     router.post("/", controller.createUser);
-    router.put("/:id", [AuthMiddleware.validateJwt], controller.updateUser);
-    router.delete("/:id", [AuthMiddleware.validateJwt], controller.deleteUser);
+    router.put(
+      "/:id",
+      [AuthMiddleware.validateJwt, AuthMiddleware.validateAdminRole],
+      controller.updateUser
+    );
+    router.delete(
+      "/:id",
+      [AuthMiddleware.validateJwt, AuthMiddleware.validateAdminRole],
+      controller.deleteUser
+    );
     return router;
   }
 }
