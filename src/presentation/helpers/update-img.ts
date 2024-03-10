@@ -2,6 +2,8 @@ import path from "path";
 import { HospitalModel, MedicalModel, UserModel } from "../../data";
 import { CustomError } from "../../domain";
 import fs from "fs";
+import { v2 as cloudinary } from "cloudinary";
+import { UploadedFile } from "express-fileupload";
 
 const delteImg = (path: string) => {
   if (fs.existsSync(path)) {
@@ -9,7 +11,12 @@ const delteImg = (path: string) => {
   }
 };
 
-export const UpdateImg = async (type: string, id: string, fileName: string) => {
+export const UpdateImg = async (
+  type: string,
+  id: string,
+  fileName: string,
+  pathFile: string
+) => {
   switch (type) {
     case "medicals":
       const medical = await MedicalModel.findById(id);
@@ -24,11 +31,20 @@ export const UpdateImg = async (type: string, id: string, fileName: string) => {
       );
 
       delteImg(destinationMedical);
+      try {
+        const { url } = await cloudinary.uploader.upload(pathFile, {
+          public_id: fileName.split(".").at(0),
+          use_filename: true,
+          unique_filename: true,
+          overwrite: true,
+        });
+        medical.img = url;
+        await medical.save();
 
-      medical.img = fileName;
-      await medical.save();
-
-      return true;
+        return true;
+      } catch (error) {
+        throw CustomError.badRequest(`${error}`);
+      }
 
     case "hospitals":
       const hospital = await HospitalModel.findById(id);
@@ -43,24 +59,40 @@ export const UpdateImg = async (type: string, id: string, fileName: string) => {
 
       delteImg(destinationHospital);
 
-      hospital.img = fileName;
-      await hospital.save();
+      try {
+        const { url } = await cloudinary.uploader.upload(pathFile, {
+          public_id: fileName.split(".").at(0),
+          use_filename: true,
+          unique_filename: true,
+          overwrite: true,
+        });
+        hospital.img = url;
+        await hospital.save();
+        return true;
+      } catch (error) {
+        throw CustomError.badRequest(`${error}`);
+      }
 
-      return true;
-      break;
     case "users":
       const user = await UserModel.findById(id);
-      if (!user) throw CustomError.notFound(`Medical with id "${id} not found`);
+      if (!user) throw CustomError.notFound(`User with id "${id} not found`);
       const oldPathUser = `./uploads/${type}/${user.img}`;
       const destinationUser = path.resolve(__dirname, "../../", oldPathUser);
 
       delteImg(destinationUser);
-
-      user.img = fileName;
-      await user.save();
-
-      return true;
-      break;
+      try {
+        const { url } = await cloudinary.uploader.upload(pathFile, {
+          public_id: fileName.split(".").at(0),
+          use_filename: true,
+          unique_filename: true,
+          overwrite: true,
+        });
+        user.img = url;
+        await user.save();
+        return true;
+      } catch (error) {
+        throw CustomError.badRequest(`${error}`);
+      }
 
     default:
       throw CustomError.internalServer("Not valid Type");

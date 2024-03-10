@@ -37,7 +37,7 @@ export class UploadService {
 
       files.mv(`${destination}/${fileName}`);
 
-      UpdateImg(type, id, fileName);
+      UpdateImg(type, id, fileName, `${destination}/${fileName}`);
 
       return { fileName };
     } catch (error) {
